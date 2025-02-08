@@ -30,19 +30,27 @@ jazz = st.slider('Jazz')
 # Zane Slider
 zany = st.slider('Zany')
 
+if 'button_enabled' not in st.session_state:
+    st.session_state.button_enabled = False
+
+
 # Random
-
-
 if st.button("Randomize"):
     info.randomize()
     message.success("Random With: " + info.get_tempo() + ', ' + info.get_mood() + ", " + str(info.get_jazzy()) + ", " + str(info.get_zany()))
+    st.session_state.button_enabled = True
 
-
-
-# Download
-if st.button("Create!"):
+if st.button("Create"):
     info.set_jazzy(jazz)
     info.set_zany(zany)
     info.set_tempo(tempo)
     info.set_mood(mood)
     message.success("Created With: " + info.get_tempo() + ', ' + info.get_mood() + ", " + str(info.get_jazzy()) + ", " + str(info.get_zany()))
+    st.session_state.button_enabled = True
+
+if st.session_state.button_enabled:
+    if st.button('Play',):
+        message.success("play")
+
+    if st.button('Download',):
+        message.success("Down")
