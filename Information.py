@@ -40,6 +40,6 @@ class Information:
         temp = ['Very Slow','Slow','Moderate','Fast','Very Fast']
         greek = ['Mixolydian','Dorian','Ionian','Lydian','Phrygian','Locrian','Aeolian']
         self.jazz = rand.random()
-        self.mood = greek[rand.randomInt(1,7)]
-        self.tempo = temp[rand.randomInt(1,5)]
+        self.mood = greek[rand.randint(1,7)]
+        self.tempo = temp[rand.randint(1,5)]
         self.zane = rand.random()
