@@ -17,7 +17,7 @@ st.selectbox( 'Tempo', ["Happy","Cool","Dark","Dreamy","Funky","sad","Tense"])
 st.slider('Jazz')
 
 # Zane Slider
-st.slider('Zane')
+st.slider(' Zane')
 
 # Random
 st.button("Randomize")
