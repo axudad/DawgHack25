@@ -12,9 +12,13 @@ class Information:
         self.tempo = tempo
         self.zany = zany
         self.jazzy = jazzy
-        self.chord = self.chords[chord]
-        self.bass = self.basses[bass]
-        self.lead = self.leads[lead]
+        self.chord_int = self.chords[chord]
+        self.chord_string = chord
+        self.bass_int = self.basses[bass]
+        self.bass_string = bass
+        self.lead_int = self.leads[lead]
+        self.lead_string = lead
+        
 
     def __init__(self):
         pass
@@ -40,17 +44,26 @@ class Information:
     def get_zany(self):
         return self.zany
     
-    def set_bass(self,bass):
-        self.bass = self.basses[bass]
+    def set_bass_int(self,bass):
+        self.bass_int = self.basses[bass]
 
-    def set_chord(self,chord):
-        self.chord = self.chords[chord]
+    def set_bass_string(self,bass):
+        self.bass_string = bass
+
+    def set_chord_int(self,chord):
+        self.chord_int = self.chords[chord]
+
+    def set_chord_string(self,chord):
+        self.chord_string = chord
 
     def set_jazzy(self,jazzy):
         self.jazzy = jazzy
 
-    def set_lead(self,lead):
-        self.lead = self.leads[lead]
+    def set_lead_int(self,lead):
+        self.lead_int = self.leads[lead]
+
+    def set_lead_string(self, lead):
+        self.lead_string = lead
 
     def set_mood(self, mood):
         self.mood = mood
