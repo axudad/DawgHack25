@@ -94,7 +94,7 @@ class Information:
         self.jazzy = round(rand.random()*100)
         self.mood = moods[rand.randint(0,6)]
         self.tempo = temp[rand.randint(0,4)]
-        self.set_bass(basses[rand.randint(0,len(basses)-1)])
-        self.set_chord(chords[rand.randint(0,len(chords)-1)])
-        self.set_lead(leads[rand.randint(0,len(leads) -1)])
+        self.set_bass_int(basses[rand.randint(0,len(basses)-1)])
+        self.set_chord_int(chords[rand.randint(0,len(chords)-1)])
+        self.set_lead_int(leads[rand.randint(0,len(leads) -1)])
         self.zany = round(rand.random()*100)
