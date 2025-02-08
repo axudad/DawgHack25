@@ -1,7 +1,6 @@
 import random
 
 def generateChordProgression(length, startDegree, scale):
-
     chordProgression = []
 
     majStartDistribution = {1 : 0.5,
@@ -58,17 +57,17 @@ def generateChordProgression(length, startDegree, scale):
                     chordProgression.append(j)
                     break
         elif i == 0 and startDegree != 0:
-            if decision < 0.33:
+            if decision < 0.5:
                 chordProgression.append(startDegree)
-            elif decision < 0.66:
+            elif decision < 0.75:
                 chordProgression.append(startDegree + 1)
             else:
-                chordProgression.append((startDegree + 4) % 7+ 1)
+                chordProgression.append((startDegree + 3) % 7+ 1)
         else :
             thisChordTransitionProbs = chordTransitionProbabilities[chordProgression[i - 1]]
             for j in range(1,8):
                 if decision < thisChordTransitionProbs[j]:
-                    if j == chordProgression[i - 1] and decision < 0.7:
+                    if j == chordProgression[i - 1] and decision < 0.6:
                         chordProgression.append(j + 1)
                     else:
                         chordProgression.append(j)
@@ -76,3 +75,23 @@ def generateChordProgression(length, startDegree, scale):
 
     print(chordProgression)
     return chordProgression
+
+def createChordBeat(emotion):
+    #[length of each chord, Pause, amount of multiplication]
+    beatArray = [[0.125, 0.125, 8], #Stutter/EightNotes
+                 [3, 1, 4], #Full Notes Per Measure
+                 [0.5, 0.5, 4], #Offbeat
+                 [2, 0, 2],  # Long and Sustained
+                 [4, 0, 1],  # One Long Ambient Chord
+                 [1.5, 0.5, 2],  # Three Halves
+                 [1, 1, 2],  # Offset Whole
+    ]
+    emotionalAttribution = {"Happy" : beatArray[5],
+                            "Cool" : beatArray[0],
+                            "Dark" : beatArray[4],
+                            "Dreamy" : beatArray[6],
+                            "Funky" : beatArray[2],
+                            "Sad" : beatArray[1],
+                            "Tense" : beatArray[3]}
+
+    return emotionalAttribution[emotion]
