@@ -2,45 +2,56 @@ import streamlit as st
 from Information import Information
 
 
-info = Information()
 
+info = Information()
 message = st.empty()
 
-# Title of the app
-st.title('Bach')
+c_logo = st.container()
 
-# A simple message
-st.write('Create music with little effort . . . no AI')
+c_title = st.container()
+c_values = st.container()
+
+c_buttons = st.container()
+c_logo.image("Recources/Bach.png", width = 200)
+
+# Title of the app
+c_title.title(':blue[Bach]')
+
+# A message
+c_title.write('Create music with little effort . . . no AI')
+c_title.write('Enter parameters below and press create!')
 
 # Tempo Drop
 # st.selectbox( label , inputs , index )
 tempos = ["Very Fast","Fast","Moderate","Slow","Very Slow"]
-tempo = st.selectbox( 'Tempo', tempos , 2)
+tempo = c_values.selectbox( 'Tempo', tempos , 2)
 info.set_tempo(tempos[2])
 
-# Tempo Drop
+# Moods Drop
 # st.selectbox( label , inputs)
 moods = ["Happy","Cool","Dark","Dreamy","Funky","Sad","Tense"]
-mood = st.selectbox( 'Mood', moods , 0)
+mood = c_values.selectbox( 'Mood', moods , 0)
 info.set_mood(moods[0])
 
 # Jazz slider
-jazz = st.slider('Jazz')
+jazz = c_values.slider('Jazz')
 
 # Zane Slider
-zany = st.slider('Zany')
+zany = c_values.slider('Zany')
 
+#enable file buttons
 if 'button_enabled' not in st.session_state:
     st.session_state.button_enabled = False
 
 
 # Random
-if st.button("Randomize"):
+if c_buttons.button("Randomize"):
     info.randomize()
     message.success("Random With: " + info.get_tempo() + ', ' + info.get_mood() + ", " + str(info.get_jazzy()) + ", " + str(info.get_zany()))
     st.session_state.button_enabled = True
 
-if st.button("Create"):
+# Create Midi Button
+if c_buttons.button("Create"):
     info.set_jazzy(jazz)
     info.set_zany(zany)
     info.set_tempo(tempo)
@@ -48,9 +59,10 @@ if st.button("Create"):
     message.success("Created With: " + info.get_tempo() + ', ' + info.get_mood() + ", " + str(info.get_jazzy()) + ", " + str(info.get_zany()))
     st.session_state.button_enabled = True
 
+# play and Download buttons
 if st.session_state.button_enabled:
-    if st.button('Play',):
+    if c_buttons.button('Play',):
         message.success("play")
 
-    if st.button('Download',):
+    if c_buttons.button('Download',):
         message.success("Down")
