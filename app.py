@@ -7,7 +7,6 @@ info = Information()
 message = st.empty()
 
 c_logo = st.container()
-
 c_title = st.container()
 c_values = st.container()
 c_inst = st.container()
@@ -65,7 +64,7 @@ if 'button_enabled' not in st.session_state:
 # Random
 if c_buttons.button("Randomize"):
     info.randomize()
-    message.success("Random With: " + info.get_tempo() + ', ' + info.get_mood() + ", " + str(info.get_jazzy()) + ", " + str(info.get_zany())+ ", " + str(info.get_chord()) + ", " + str(info.get_bass())+ ", " + str(info.get_lead()))
+    message.success("Random With: " + info.get_tempo() + ', ' + info.get_mood() + ", " + str(info.get_jazzy()) + ", " + str(info.get_zany())+ ", " + str(info.get_chord_string()) + ", " + info.get_bass_string()+ ", " + str(info.get_lead_string()))
     st.session_state.button_enabled = True
 
 # Create Midi Button
@@ -74,7 +73,7 @@ if c_buttons.button("Create"):
     info.set_zany(zany)
     info.set_tempo(tempo)
     info.set_mood(mood)
-    message.success("Created With: " + info.get_tempo() + ', ' + info.get_mood() + ", " + str(info.get_jazzy()) + ", " + str(info.get_zany())+ ", " + str(info.get_chord()) + ", " + str(info.get_bass())+ ", " + str(info.get_lead()))
+    message.success("Created With: " + info.get_tempo() + ', ' + info.get_mood() + ", " + str(info.get_jazzy()) + ", " + str(info.get_zany())+ ", " + str(info.get_chord_string()) + ", " + str(info.get_bass_string())+ ", " + str(info.get_lead_string()))
     st.session_state.button_enabled = True
 
 # play and Download buttons
