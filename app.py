@@ -10,7 +10,7 @@ c_logo = st.container()
 
 c_title = st.container()
 c_values = st.container()
-
+c_inst = st.container()
 c_buttons = st.container()
 c_logo.image("Recources/Bach.png", width = 200)
 
@@ -33,6 +33,24 @@ moods = ["Happy","Cool","Dark","Dreamy","Funky","Sad","Tense"]
 mood = c_values.selectbox( 'Mood', moods , 0)
 info.set_mood(moods[0])
 
+# Chords Drop
+# st.selectbox( label , inputs)
+chords = ["Drawbar Organ","Electric Piano","Fantasia","Skakuhachi","Ocarina","Halo"]
+chord = c_inst.selectbox( 'Chord', chords , 0)
+info.set_chord(chords[0])
+
+# Bass Drop
+# st.selectbox( label , inputs)
+basses = ['Synth Bass','Baratone Sax','Synth Bass 2','Fretless Bass']
+bass = c_inst.selectbox( 'Bass', basses , 0)
+info.set_bass(basses[0])
+
+# leads Drop
+# st.selectbox( label , inputs)
+leads = ["Solo Vox","Piano","Marimba","Strings","Violin"]
+lead = c_inst.selectbox( 'Lead', leads , 0)
+info.set_lead(leads[0])
+
 # Jazz slider
 jazz = c_values.slider('Jazz')
 
@@ -47,7 +65,7 @@ if 'button_enabled' not in st.session_state:
 # Random
 if c_buttons.button("Randomize"):
     info.randomize()
-    message.success("Random With: " + info.get_tempo() + ', ' + info.get_mood() + ", " + str(info.get_jazzy()) + ", " + str(info.get_zany()))
+    message.success("Random With: " + info.get_tempo() + ', ' + info.get_mood() + ", " + str(info.get_jazzy()) + ", " + str(info.get_zany())+ ", " + str(info.get_chord()) + ", " + str(info.get_bass())+ ", " + str(info.get_lead()))
     st.session_state.button_enabled = True
 
 # Create Midi Button
@@ -56,7 +74,7 @@ if c_buttons.button("Create"):
     info.set_zany(zany)
     info.set_tempo(tempo)
     info.set_mood(mood)
-    message.success("Created With: " + info.get_tempo() + ', ' + info.get_mood() + ", " + str(info.get_jazzy()) + ", " + str(info.get_zany()))
+    message.success("Created With: " + info.get_tempo() + ', ' + info.get_mood() + ", " + str(info.get_jazzy()) + ", " + str(info.get_zany())+ ", " + str(info.get_chord()) + ", " + str(info.get_bass())+ ", " + str(info.get_lead()))
     st.session_state.button_enabled = True
 
 # play and Download buttons
