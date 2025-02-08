@@ -1,3 +1,5 @@
+import random as rand
+
 class Information:
     def __init__(self,mood, tempo, zany, jazzy):
         self.mood = mood
@@ -32,3 +34,11 @@ class Information:
 
     def set_zany(self, zany):
         self.zany = zany
+
+    def randomize(self):
+        temp = ['Very Slow','Slow','Moderate','Fast','Very Fast']
+        greek = ['Mixolydian','Dorian','Ionian','Lydian','Phrygian','Locrian','Aeolian']
+        self.jazz = rand.random()
+        self.mood = greek[rand.randomInt(1,7)]
+        self.tempo = temp[rand.randomInt(1,5)]
+        self.zane = rand.random()
