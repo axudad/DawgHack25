@@ -63,9 +63,16 @@ class Information:
 
 
     def randomize(self):
+        basses = ['Synth Bass',"Baratone Sax","Synth Bass 2","Fretless Bass"]
+        chords = ["Drawbar Organ","Electric Piano","Fantasia","Skakuhachi","Ocarina","Halo"]
+        leads = ["Solo Vox","Piano","Marimba","Strings","Violin"]
+
         temp = ['Very Slow','Slow','Moderate','Fast','Very Fast']
         greek = ['Mixolydian','Dorian','Ionian','Lydian','Phrygian','Locrian','Aeolian']
         self.jazz = rand.random()*100
         self.mood = greek[rand.randint(0,6)]
         self.tempo = temp[rand.randint(0,4)]
+        self.set_bass(basses[rand.randint(0,basses.len-1)])
+        self.set_chord(chords[rand.randint(0,chords.len-1)])
+        self.set_lead(leads[rand.randint(0,leads.len-1)])
         self.zane = rand.random()*100
