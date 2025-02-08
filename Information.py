@@ -39,7 +39,7 @@ class Information:
     def randomize(self):
         temp = ['Very Slow','Slow','Moderate','Fast','Very Fast']
         greek = ['Mixolydian','Dorian','Ionian','Lydian','Phrygian','Locrian','Aeolian']
-        self.jazz = rand.random()
+        self.jazz = rand.random()*100
         self.mood = greek[rand.randint(0,6)]
         self.tempo = temp[rand.randint(0,4)]
-        self.zane = rand.random()
+        self.zane = rand.random()*100
