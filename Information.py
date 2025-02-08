@@ -35,6 +35,7 @@ class Information:
     def set_zany(self, zany):
         self.zany = zany
 
+
     def randomize(self):
         temp = ['Very Slow','Slow','Moderate','Fast','Very Fast']
         greek = ['Mixolydian','Dorian','Ionian','Lydian','Phrygian','Locrian','Aeolian']
