@@ -35,7 +35,7 @@ class Information:
         return self.mood
     
     def get_tempo(self):
-        return self.mood
+        return self.tempo
     
     def get_zany(self):
         return self.zany
