@@ -13,8 +13,8 @@ class Information:
         self.zany = zany
         self.jazzy = jazzy
         self.chord = self.chords[chord]
-        self.bass = bass
-        self.lead = lead
+        self.bass = self.basses[bass]
+        self.lead = self.leads[lead]
 
     def __init__(self):
         pass
