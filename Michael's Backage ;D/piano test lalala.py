@@ -1,15 +1,49 @@
 from midiutil import MIDIFile
 import random
+import generateChordProgression
+import pygame
 
-def playChord(pitches, time, duration):
+# Initialize pygame mixer
+pygame.init()
+
+def play_midi():
+    pygame.mixer.init()
+    pygame.mixer.music.load(midi_file)
+    pygame.mixer.music.play()
+
+def randomFloat():
+    return random.randint(1, 101) / 101
+def playChord(track, channel, pitches, time, duration):
+    currentNote = 1
     for p in pitches:
-        midi.addNote(0, 0, p, time, duration, 100)
+        #ADDING CHORD EXTENSIONS FOR MORE COMPLEXITY
+        if (currentNote > 3):
+            extensionChance = randomFloat()
+            seventhChance = 0.7
+            ninthChance = 0.3
+            if (currentNote == 4 and extensionChance < seventhChance):
+                midi.addNote(track, channel, p, time + 0.02 * p, duration - 0.02 * p, 90)
+            elif (currentNote == 5 and extensionChance < ninthChance):
+                midi.addNote(track, channel, p, time + 0.02 * p, duration - 0.02 * p, 80)
+            else:
+                pass
+        else:
+            midi.addNote(track, channel, p, time + 0.02 * p, duration - 0.02 * p, 100)
+        currentNote += 1
 
+def playNote(track, channel, pitch, time, duration):
+    midi.addNote(track, channel, pitch, time, duration, 90)
+
+
+#SYNTH IS BEING PLAYED ON CHANNEL AND TRACK 0
+#BASS IS BEING PLAYED ON TRACK
 
 # Create a MIDI file with one track
-midi = MIDIFile(1)
-midi.addTempo(0, 0, 110)  # Track 0, time 0, 120 BPM
-
+midi = MIDIFile(2)
+midi.addTempo(0, 0, 140)  # Track 0, time 0, 120 BPM
+midi.addTempo(1, 0, 140)  # Track 1, time 0, 120 BPM
+midi.addProgramChange(0, 0, 0, 30)
+midi.addProgramChange(1, 1, 0, 37)
 keyRootsToPitch = {"C" : 49,
                    "Db" : 50,
                    "D" : 51,
@@ -31,42 +65,82 @@ gmShifts = {
     "Sad" : 5,
     "Tense" : 6
 }
-greekMode = gmShifts["Sad"]
+greekMode = gmShifts["Dark"]
 
 #SONG INFORMATION
 key = random.randint(43,53)
 
 root = key
 
-scaleDegrees = [[root, root + 4, root + 7], #1 TONIC
-                [root + 2, root + 4, root + 7], #2 SUPERTONIC
-                [root + 4, root + 7, root + 11], #3 MEDIANT
-                [root + 5, root + 9, root + 12], #4 SUBDOMINANT
-                [root + 7, root + 11, root + 14], #5 DOMINANT
-                [root + 9, root + 12, root + 16], #6 SUBMEDIANT
-                [root + 11, root + 14, root + 17]] #7 LEADING TONE
+happyScaleDegrees = [[root, root + 4, root + 7, root + 11, root + 14], #1 TONIC
+                    [root + 2, root + 5, root + 9, root + 12, root + 16], #2 SUPERTONIC
+                    [root + 4, root + 7, root + 11, root + 14, root + 17], #3 MEDIANT
+                    [root + 5, root + 9, root + 12, root + 16, root + 19], #4 SUBDOMINANT
+                    [root + 7, root + 11, root + 14, root + 17, root + 21], #5 DOMINANT
+                    [root + 9, root + 12, root + 16, root + 19, root + 23], #6 SUBMEDIANT
+                    [root + 11, root + 14, root + 17, root + 21, root + 24]] #7 LEADING TONE
 
-# Add a note: track, channel, pitch, start_time, duration, volume
-duration = 3
+sadScaleDegrees = [[root, root + 3, root + 7, root + 10, root + 14], #1 TONIC
+                    [root + 2, root + 5, root + 8, root + 12, root + 15], #2 SUPERTONIC
+                    [root + 3, root + 7, root + 10, root + 14, root + 17], #3 MEDIANT
+                    [root + 5, root + 8, root + 12, root + 15, root + 19], #4 SUBDOMINANT
+                    [root + 7, root + 10, root + 14, root + 17, root + 20], #5 DOMINANT
+                    [root + 8, root + 12, root + 15, root + 19, root + 22], #6 SUBMEDIANT
+                    [root + 10, root + 14, root + 17, root + 20, root + 24]] #7 LEADING TONE
+
+if (greekMode == 0 or greekMode == 3 or greekMode == 4):
+    scaleDegrees = happyScaleDegrees
+else:
+    scaleDegrees = sadScaleDegrees
+
+duration = 4
 time = -duration
-sequence = [random.randint(1, 8),
-            random.randint(1, 8),
-            random.randint(1, 8),
-            random.randint(1, 8)]
+
+sequence = generateChordProgression.generateChordProgression(4,0)
 
 chord_amounts = len(sequence)
 
 for i in range (0, chord_amounts):
+    root = key
     time = time + duration
+    octaveModChance = random.randint(1, 101) / 101
+    if (octaveModChance < 0.20):
+        root -= 12 #DROPS an Octave
+    elif (octaveModChance > 0.85):
+        root += 12 #DROPS an Octave
+    playChord(0, 0, happyScaleDegrees[((sequence[i] + greekMode) % 7) - 1], time, duration)
+    #playNote(1, 1, scaleDegrees[((sequence[i] + greekMode) % 7) - 1][3] - 24, time, duration)
 
-    playChord(scaleDegrees[((sequence[i] + greekMode) % 7) - 1], time, duration)
+sequence2 = generateChordProgression.generateChordProgression(4,sequence[0])
 
+chord_amounts = len(sequence2)
+
+for i in range (0, chord_amounts):
+    root = key
+    time = time + duration
+    octaveModChance = randomFloat()
+    if (octaveModChance < 0.20):
+        root -= 12 #DROPS an Octave
+    elif (octaveModChance > 0.85):
+        root += 12 #DROPS an Octave
+
+    #playNote(1, 1, scaleDegrees[((sequence2[i] + greekMode) % 7) - 1][0] - 24, time, duration)
+    playChord(0, 0, scaleDegrees[((sequence2[i] + greekMode) % 7) - 1], time, duration)
 
 # Save to file
-filenumber = 0
-with open("basicChordProgression.mid", "wb") as output_file:
+filenumber = 15
+
+with open("basicChordProgression" + str(filenumber) + ".mid", "wb") as output_file:
     midi.writeFile(output_file)
 
-
-
 print("MIDI file 'random.mid' saved successfully.")
+
+# Load and play MIDI file using FluidSynth
+midi_file = r"./basicChordProgression" + str(filenumber) + ".mid"
+
+# Start MIDI playback
+play_midi()
+
+# Keep running while music is playing
+while pygame.mixer.music.get_busy():
+    continue
