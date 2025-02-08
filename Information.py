@@ -23,17 +23,26 @@ class Information:
     def __init__(self):
         pass
 
-    def get_bass(self):
-        return self.bass
+    def get_bass_int(self):
+        return self.bass_int
+
+    def get_bass_string(self):
+        return self.bass_string
     
-    def get_chord(self):
-        return self.chord
+    def get_chord_int(self):
+        return self.chord_int
+    
+    def get_chord_string(self):
+        return self.chord_string
     
     def get_jazzy(self):
         return self.jazzy
     
-    def get_lead(self):
-        return self.lead
+    def get_lead_int(self):
+        return self.lead_int
+    
+    def get_lead_string(self):
+        return self.lead_string
     
     def get_mood(self):
         return self.mood
@@ -85,7 +94,7 @@ class Information:
         self.jazzy = round(rand.random()*100)
         self.mood = moods[rand.randint(0,6)]
         self.tempo = temp[rand.randint(0,4)]
-        self.set_bass(basses[rand.randint(0,len(basses)-1)])
-        self.set_chord(chords[rand.randint(0,len(chords)-1)])
-        self.set_lead(leads[rand.randint(0,len(leads) -1)])
+        self.set_bass_int(basses[rand.randint(0,len(basses)-1)])
+        self.set_chord_int(chords[rand.randint(0,len(chords)-1)])
+        self.set_lead_int(leads[rand.randint(0,len(leads) -1)])
         self.zany = round(rand.random()*100)
