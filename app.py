@@ -1,26 +1,38 @@
+import random as rnd
+
 import streamlit as st
 
+class Information:
+    def __init__(self):
+        self.mood = "Happy"
+        self.tempo = "Normal"
+        self.jazzy = 50
+        self.zany = 50
+info = Information()
 # Title of the app
 st.title('Bach')
 
 # A simple message
 st.write('Create music with little effort . . . no AI')
 
-# Mood Toggle
-st.toggle('Mood')
+# Tempo Drop
+# st.selectbox( label , inputs)
+tempos = ["Normal","Very Fast","Fast","Slow","Very Slow"]
+info.tempo = st.selectbox( 'Tempo', tempos)
 
 # Tempo Drop
 # st.selectbox( label , inputs)
-st.selectbox( 'Tempo', ["Happy","Cool","Dark","Dreamy","Funky","sad","Tense"])
+moods = ["Happy","Cool","Dark","Dreamy","Funky","sad","Tense"]
+info.mood = st.selectbox( 'Mood', moods)
 
 # Jazz slider
-st.slider('Jazz')
+info.jazzy = st.slider('Jazz')
 
 # Zane Slider
-st.slider(' Zane')
+info.zany = st.slider('Zane')
 
 # Random
-st.button("Randomize")
+if st.button("Randomize"):
 
 # Download
 st.button("Create!")
