@@ -4,3 +4,7 @@ class Information:
         self.tempo = tempo
         self.zany = zany
         self.jazzy = jazzy
+    def get_mood(self):
+        return self.mood
+    
+    def
