@@ -68,9 +68,9 @@ class Information:
         leads = ["Solo Vox","Piano","Marimba","Strings","Violin"]
 
         temp = ['Very Slow','Slow','Moderate','Fast','Very Fast']
-        greek = ['Mixolydian','Dorian','Ionian','Lydian','Phrygian','Locrian','Aeolian']
+        moods = ['Happy','Cool','Dark','Funky','Dreamy','Sad','Tense']
         self.jazzy = round(rand.random()*100)
-        self.mood = greek[rand.randint(0,6)]
+        self.mood = moods[rand.randint(0,6)]
         self.tempo = temp[rand.randint(0,4)]
         self.set_bass(basses[rand.randint(0,len(basses)-1)])
         self.set_chord(chords[rand.randint(0,len(chords)-1)])
