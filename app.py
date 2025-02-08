@@ -1,14 +1,11 @@
-import random as rnd
-
 import streamlit as st
+from Information import Information
 
-class Information:
-    def __init__(self):
-        self.mood = "Happy"
-        self.tempo = "Normal"
-        self.jazzy = 50
-        self.zany = 50
+
 info = Information()
+
+message = st.empty()
+
 # Title of the app
 st.title('Bach')
 
@@ -16,23 +13,36 @@ st.title('Bach')
 st.write('Create music with little effort . . . no AI')
 
 # Tempo Drop
-# st.selectbox( label , inputs)
-tempos = ["Normal","Very Fast","Fast","Slow","Very Slow"]
-info.tempo = st.selectbox( 'Tempo', tempos)
+# st.selectbox( label , inputs , index )
+tempos = ["Very Fast","Fast","Moderate","Slow","Very Slow"]
+tempo = st.selectbox( 'Tempo', tempos , 2)
+info.set_tempo(tempos[2])
 
 # Tempo Drop
 # st.selectbox( label , inputs)
-moods = ["Happy","Cool","Dark","Dreamy","Funky","sad","Tense"]
-info.mood = st.selectbox( 'Mood', moods)
+moods = ["Happy","Cool","Dark","Dreamy","Funky","Sad","Tense"]
+mood = st.selectbox( 'Mood', moods , 0)
+info.set_mood(moods[0])
 
 # Jazz slider
-info.jazzy = st.slider('Jazz')
+jazz = st.slider('Jazz')
 
 # Zane Slider
-info.zany = st.slider('Zane')
+zany = st.slider('Zany')
 
 # Random
+
+
 if st.button("Randomize"):
+    info.randomize()
+    message.success("Random With: " + info.get_tempo() + ', ' + info.get_mood() + ", " + str(info.get_jazzy()) + ", " + str(info.get_zany()))
+
+
 
 # Download
-st.button("Create!")
+if st.button("Create!"):
+    info.set_jazzy(jazz)
+    info.set_zany(zany)
+    info.set_tempo(tempo)
+    info.set_mood(mood)
+    message.success("Created With: " + info.get_tempo() + ', ' + info.get_mood() + ", " + str(info.get_jazzy()) + ", " + str(info.get_zany()))

@@ -38,8 +38,8 @@ class Information:
 
     def randomize(self):
         temp = ['Very Slow','Slow','Moderate','Fast','Very Fast']
-        greek = ['Mixolydian','Dorian','Ionian','Lydian','Phrygian','Locrian','Aeolian']
-        self.jazz = rand.random()
+        greek = ["Happy","Cool","Dark","Dreamy","Funky","Sad","Tense"]
+        self.jazzy = rand.randint(1,101) - 1
         self.mood = greek[rand.randint(0,6)]
         self.tempo = temp[rand.randint(0,4)]
-        self.zane = rand.random()
+        self.zany = rand.randint(0,100)
