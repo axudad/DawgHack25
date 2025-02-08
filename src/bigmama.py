@@ -27,6 +27,10 @@ def playChord(midi, track, channel, pitches, time, duration, strum):
             midi.addNote(track, channel, p, time + strum * p, duration - strum * p, 80)
         currentNote += 1
 
+def playBass(midi, track, channel, pitch, time, duration):
+    midi.addNote(track, channel, pitch - 24, time, duration, 80)
+
+
 def main(inputTempo, mood, jazziness, zaniness, chord, bass, lead):
     #SYNTH IS BEING PLAYED ON CHANNEL AND TRACK 0
     #BASS IS BEING PLAYED ON TRACK
@@ -134,24 +138,54 @@ def main(inputTempo, mood, jazziness, zaniness, chord, bass, lead):
 
             zanyRoll = (random.randint(1, 101) / 101) * 0.65
             if zanyRoll > zanyChance:
-                playChord(midi, 0, 0, zanyScaleDegrees[((sequence[i] + greekMode) % 7) - 1], time, beat[0]*2, 0.0)
+                playChord(midi, 1, 0, zanyScaleDegrees[((sequence[i] + greekMode) % 7) - 1], time, beat[0]*2, 0.0)
             else:
-                playChord(midi, 0, 0, scaleDegrees[((sequence[i] + greekMode) % 7) - 1], time, beat[0]*2, 0.0)
+                playChord(midi, 1, 0, scaleDegrees[((sequence[i] + greekMode) % 7) - 1], time, beat[0]*2, 0.0)
                 #playNote(1, 1, scaleDegrees[((sequence[i] + greekMode) % 7) - 1][3] - 24, time, bars)
 
     time = time + beat[0]*2 + beat[1]*2
-    playChord(midi, 0, 0, scaleDegrees[((sequence[-1] + greekMode) % 7) - 1], time, beat[0]*5, 0.07)
+    playChord(midi, 1, 0, scaleDegrees[((sequence[-1] + greekMode) % 7) - 1], time, beat[0]*5, 0)
 
     # Save to file
-    filenumber = 17
+    filenumber = 19
 
-    with open("basicChordProgression" + str(filenumber) + ".mid", "wb") as output_file:
-        midi.writeFile(output_file)
+    #with open("./chord1.mid", "wb") as output_file:
+        #midi.writeFile(output_file)
 
     print("MIDI file 'random.mid' saved successfully.")
 
+    midi2 = MIDIFile(4)
+    midi2.addTempo(2, 0, tempo)  # Track 0, time 0, 120 BPM
+    midi2.addProgramChange(2, 0, 0, bass)
+    time = 0
+    for i in range (0, phrases):
+
+        for i in range (0, len(sequence)):
+            root = key
+            time = time + beat[0]*2 + beat[1]*2
+
+            octaveModChance = random.randint(1, 101) / 101
+            if (octaveModChance < 0.20):
+                root -= 12 #DROPS an Octave
+            elif (octaveModChance > 0.85):
+                root += 12 #DROPS an Octave
+
+
+            firstPhrase = scaleDegrees[((sequence[i] + greekMode) % 7) - 1][0]
+
+            zanyRoll = (random.randint(1, 101) / 101) * 0.65
+            if zanyRoll > zanyChance:
+                playBass(midi2, 2, 0, zanyScaleDegrees[((sequence[i] + greekMode) % 7) - 1][0], time, beat[0]*2)
+            else:
+                playBass(midi2, 2, 0, scaleDegrees[((sequence[i] + greekMode) % 7) - 1][0], time, beat[0]*2)
+                #playNote(1, 1, scaleDegrees[((sequence[i] + greekMode) % 7) - 1][3] - 24, time, bars)
+
+    #with open("./bass1.mid", "wb") as output_file:
+        #midi.writeFile(output_file)
+
     def play_midi():
-        pygame.mixer.music.load(r"./basicChordProgression" + str(filenumber) + ".mid")
+        #pygame.mixer.music.load(r"./basicChordProgression" + str(filenumber) + ".mid")
+        pygame.mixer.music.load(r"./merged_output.mid")
         pygame.mixer.music.play()
 
     play_midi()
@@ -159,7 +193,5 @@ def main(inputTempo, mood, jazziness, zaniness, chord, bass, lead):
         continue
 
 
-
-
-
+main("Fast", "Dreamy",jazziness = 0.5, zaniness = 0.20, chord = 105, bass = 35, lead = 6)
 
