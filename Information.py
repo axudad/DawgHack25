@@ -54,24 +54,24 @@ class Information:
         return self.zany
     
     def set_bass_int(self,bass):
-        self.bass_int = self.basses[bass]
+        self.bass_int = bass
 
     def set_bass_string(self,bass):
         self.bass_string = bass
-        self.bass_int = self.basses[bass]
+        self.set_bass_int(self.basses[bass])
 
     def set_chord_int(self,chord):
-        self.chord_int = self.chords[chord]
+        self.chord_int = chord
 
     def set_chord_string(self,chord):
         self.chord_string = chord
-        self.chord_int = self.chords[chord]
+        self.set_chord_int(self.chords[chord])
 
     def set_jazzy(self,jazzy):
         self.jazzy = jazzy
 
     def set_lead_int(self,lead):
-        self.lead_int = self.leads[lead]
+        self.lead_int = lead
 
     def set_lead_string(self, lead):
         self.lead_string = lead

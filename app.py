@@ -34,27 +34,29 @@ info.set_mood(moods[0])
 
 # Chords Drop
 # st.selectbox( label , inputs)
-chords = ["Drawbar Organ","Electric Piano","Fantasia","Skakuhachi","Ocarina","Halo"]
-chord = c_inst.selectbox( 'Chord', chords , 0)
-info.set_chord(chords[0])
+chords_ = ["Drawbar Organ","Electric Piano","Fantasia","Skakuhachi","Ocarina","Halo"]
+chord = c_inst.selectbox( 'Chord', chords_ , 0)
+info.set_chord_string(chords_[0])
 
 # Bass Drop
 # st.selectbox( label , inputs)
-basses = ['Synth Bass','Baratone Sax','Synth Bass 2','Fretless Bass']
-bass = c_inst.selectbox( 'Bass', basses , 0)
-info.set_bass(basses[0])
+basses_ = ['Synth Bass',"Baratone Sax","Synth Bass 2","Fretless Bass"]
+bass = c_inst.selectbox( 'Bass', basses_ , 0)
+info.set_bass_string(basses_[0])
 
 # leads Drop
 # st.selectbox( label , inputs)
-leads = ["Solo Vox","Piano","Marimba","Strings","Violin"]
-lead = c_inst.selectbox( 'Lead', leads , 0)
-info.set_lead(leads[0])
+leads_ = ["Solo Vox","Piano","Marimba","Strings","Violin"]
+lead = c_inst.selectbox( 'Lead', leads_ , 0)
+info.set_lead_string(leads_[0])
 
 # Jazz slider
 jazz = c_values.slider('Jazz')
+info.set_jazzy(0)
 
 # Zane Slider
 zany = c_values.slider('Zany')
+info.set_zany(0)
 
 #enable file buttons
 if 'button_enabled' not in st.session_state:
@@ -76,7 +78,7 @@ if c_buttons.button("Create"):
     st.session_state.button_enabled = True
 
 def create():
-    bigmama(info.get_tempo(), info.get_mood(), jazziness = info.get_jazzy() , zaniness = info.get_zany(), chord = info.get_chord_int(), bass = info.get_bass_int(), lead = info.get_bass_int())
+    bigmama.main(info.get_tempo(), info.get_mood(), jazziness = info.get_jazzy() , zaniness = info.get_zany(), chord = info.get_chord_int(), bass = info.get_bass_int(), lead = info.get_bass_int())
 
 # play and Download buttons
 if st.session_state.button_enabled:
