@@ -87,5 +87,6 @@ if st.session_state.button_enabled:
         message.success("play")
 
     if c_buttons.download_button('Download',"Michael's Backage ;D/MIDIS/basicChordProgression.mid",):
+        create()
         message.success("Down")
 
