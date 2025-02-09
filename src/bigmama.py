@@ -48,29 +48,44 @@ def playChord(midi, track, channel, pitches, time, duration, strum):
             midi.addNote(track, channel, p, time + strum * p, duration - strum * p, 80)
         currentNote += 1
 
-def playBass(midi, track, channel, pitch, time, duration):
-    midi.addNote(track, channel, pitch - 24, time - 0.25, duration, 127)
-    midi.addNote(track, channel, pitch - 24, time + 0.25, duration, 87)
-    midi.addNote(track, channel, pitch - 24, time + 0.75, duration, 127)
-    midi.addNote(track, channel, pitch - 24, time + 1.25, duration, 87)
-    midi.addNote(track, channel, pitch - 24, time + 1.75, duration, 127)
-    midi.addNote(track, channel, pitch - 24, time + 2.00, duration, 87)
-
-def playLead(midi, track, channel, pitch, time, duration, melody):
+def playBass(midi, track, channel, pitch, time, duration, melody):
     if melody == 0:
-        midi.addNote(track, channel, pitch + 0, time - 0.33, duration / 3, 100)
-        midi.addNote(track, channel, pitch + 3, time + 0.33, duration / 3, 87)
-        midi.addNote(track, channel, pitch + 8, time + 0.66, duration / 3, 127)
-        midi.addNote(track, channel, pitch + 11, time + 1, duration / 3, 87)
-        midi.addNote(track, channel, pitch + 0, time + 1.33, duration / 3, 127)
-        midi.addNote(track, channel, pitch + 3, time + 1.66, duration / 3, 87)
+        midi.addNote(track, channel, pitch - 24, time - 0.25, duration, 127)
+        midi.addNote(track, channel, pitch - 24, time + 0.25, duration, 87)
+        midi.addNote(track, channel, pitch - 24, time + 0.75, duration, 127)
+        midi.addNote(track, channel, pitch - 24, time + 1.25, duration, 87)
+        midi.addNote(track, channel, pitch - 24, time + 1.75, duration, 127)
+        midi.addNote(track, channel, pitch - 24, time + 2.00, duration, 87)
     elif melody == 1:
-        midi.addNote(track, channel, pitch + 0, time - 0.25, duration / 2, 100)
-        midi.addNote(track, channel, pitch + 3, time + 0.25, duration / 2, 87)
-        midi.addNote(track, channel, pitch + 8, time + 1, duration, 127)
-        midi.addNote(track, channel, pitch + 11, time + 1.5, duration / 2, 87)
-        midi.addNote(track, channel, pitch + 0, time + 1.75, duration / 2, 127)
-        midi.addNote(track, channel, pitch + 3, time + 2.00, duration / 2, 87)
+        midi.addNote(track, channel, pitch - 24, time - 0, duration, 110)
+        midi.addNote(track, channel, pitch - 24, time + 0.5, duration, 110)
+        midi.addNote(track, channel, pitch - 24, time + 1, duration, 110)
+        midi.addNote(track, channel, pitch - 24, time + 1.5, duration, 110)
+        midi.addNote(track, channel, pitch - 24, time + 2, duration, 110)
+    elif melody == 2:
+        midi.addNote(track, channel, pitch - 24, time - 0, duration, 110)
+        midi.addNote(track, channel, pitch - 24, time + 0.5, duration, 110)
+        midi.addNote(track, channel, pitch - 12, time + 1, duration, 110)
+        midi.addNote(track, channel, pitch - 23, time + 1.5, duration, 110)
+        midi.addNote(track, channel, pitch - 23, time + 2, duration, 110)
+    
+
+def playLead(midi, track, channel, pitches, time, duration, melody):
+
+    if melody == 0:
+        midi.addNote(track, channel, pitches[0], time - 0.33, duration / 3, 100)
+        midi.addNote(track, channel, pitches[2], time + 0.33, duration / 3, 87)
+        midi.addNote(track, channel, pitches[3], time + 0.66, duration / 3, 127)
+        midi.addNote(track, channel, pitches[2], time + 1, duration / 3, 87)
+        midi.addNote(track, channel, pitches[3], time + 1.33, duration / 3, 127)
+        midi.addNote(track, channel, pitches[1], time + 1.66, duration / 3, 87)
+    elif melody == 1:
+        midi.addNote(track, channel, pitches[0], time - 0.25, duration / 2, 100)
+        midi.addNote(track, channel, pitches[1], time + 0.25, duration / 2, 87)
+        midi.addNote(track, channel, pitches[3], time + 1, duration, 127)
+        midi.addNote(track, channel, pitches[0], time + 1.5, duration / 2, 87)
+        midi.addNote(track, channel, pitches[1], time + 1.75, duration / 2, 127)
+        midi.addNote(track, channel, pitches[3], time + 2.00, duration / 2, 87)
 
 
 
@@ -124,7 +139,7 @@ def main(inputTempo, mood, jazziness, zaniness, chord, bass, lead):
     #SONG INFORMATION
     key = random.randint(43,53)
     root = key
-    zanyChance = zaniness
+    zanyChance = 1 - zaniness
     greekMode = gmShifts[mood]
     beat = generateChordProgression.createChordBeat(mood)
     print("BEAT: " + str(beat))
@@ -219,11 +234,22 @@ def main(inputTempo, mood, jazziness, zaniness, chord, bass, lead):
             firstPhrase = scaleDegrees[((sequence[i] + greekMode) % 7) - 1][0]
 
             zanyRoll = (random.randint(1, 101) / 101) * 0.65
+            floatRoll = randomFloat()
+            if floatRoll < 0.33:
+                melody = 0
+            elif floatRoll < 0.66:
+                  melody = 1
+            elif floatRoll < 1:
+                  melody = 2
+
+
             if zanyRoll > zanyChance:
-                playBass(midi2, 0, 0, zanyScaleDegrees[((sequence[i] + greekMode) % 7) - 1][0], time + 0.05, beat[0]*2)
+                playBass(midi2, 0, 0, zanyScaleDegrees[((sequence[i] + greekMode) % 7) - 1][0], time + 0.05, beat[0]*2, melody)
             else:
-                playBass(midi2, 0, 0, scaleDegrees[((sequence[i] + greekMode) % 7) - 1][0], time + 0.05, beat[0]*2)
+                playBass(midi2, 0, 0, scaleDegrees[((sequence[i] + greekMode) % 7) - 1][0], time + 0.05, beat[0]*2, melody)
                 #playNote(1, 1, scaleDegrees[((sequence[i] + greekMode) % 7) - 1][3] - 24, time, bars)
+
+
     with open("./bass1.mid", "wb") as output_file:
         midi2.writeFile(output_file)
 
@@ -246,10 +272,18 @@ def main(inputTempo, mood, jazziness, zaniness, chord, bass, lead):
             firstPhrase = scaleDegrees[((sequence[i] + greekMode) % 7) - 1][0]
 
             zanyRoll = (random.randint(1, 101) / 101) * 0.65
-            if zanyRoll > zanyChance:
-                playLead(midi3, 0, 0, zanyScaleDegrees[((sequence[i] + greekMode) % 7) - 1][0], time,beat[0] * 2, 1)
+            floatRoll = randomFloat()
+            if floatRoll < 0.33:
+                melody = 0
+            elif floatRoll < 0:
+                  melody = 1
+            elif floatRoll < 1:
+                  melody = 2
+                
+            if zanyRoll >zanyChance:
+                playLead(midi3, 0, 0, zanyScaleDegrees[((sequence[i] + greekMode) % 7) - 1], time,beat[0] * 2, melody)
             else:
-                playLead(midi3, 0, 0, scaleDegrees[((sequence[i] + greekMode) % 7) - 1][0], time, beat[0] * 2, 1)
+                playLead(midi3, 0, 0, scaleDegrees[((sequence[i] + greekMode) % 7) - 1], time, beat[0] * 2, melody)
 
     with open("./lead1.mid", "wb") as output_file:
         midi3.writeFile(output_file)
@@ -272,7 +306,7 @@ def main(inputTempo, mood, jazziness, zaniness, chord, bass, lead):
         continue
 
 
-main("Very Fast", "Sad",jazziness = 0.5, zaniness = 1, chord = 12, bass = 34, lead = 43)
+main("Very Fast", "Tense",jazziness = 0.5, zaniness = 0.12, chord = 53, bass = 36, lead = 61)
 
 
 
