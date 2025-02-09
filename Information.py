@@ -58,12 +58,14 @@ class Information:
 
     def set_bass_string(self,bass):
         self.bass_string = bass
+        self.bass_int = self.basses[bass]
 
     def set_chord_int(self,chord):
         self.chord_int = self.chords[chord]
 
     def set_chord_string(self,chord):
         self.chord_string = chord
+        self.chord_int = self.chords[chord]
 
     def set_jazzy(self,jazzy):
         self.jazzy = jazzy
@@ -73,6 +75,7 @@ class Information:
 
     def set_lead_string(self, lead):
         self.lead_string = lead
+        self.lead_int = self.leads[lead]
 
     def set_mood(self, mood):
         self.mood = mood
