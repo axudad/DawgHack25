@@ -2,6 +2,27 @@ from midiutil import MIDIFile
 import random
 import pygame
 import generateChordProgression
+import mido
+
+def merge_midi(file1, file2, output_file):
+    # Load both MIDI files
+    midi1 = mido.MidiFile(file1)
+    midi2 = mido.MidiFile(file2)
+
+    # Create a new MIDI file for the merged output
+    merged_midi = mido.MidiFile()
+
+    # Copy tracks from both MIDI files
+    for track in midi1.tracks:
+        merged_midi.tracks.append(track.copy())
+
+    for track in midi2.tracks:
+        merged_midi.tracks.append(track.copy())
+
+    # Save the merged MIDI file
+    merged_midi.save(output_file)
+    print(f"Merged MIDI saved as {output_file}")
+
 
 def randomFloat():
     return random.randint(1, 101) / 101
@@ -28,7 +49,31 @@ def playChord(midi, track, channel, pitches, time, duration, strum):
         currentNote += 1
 
 def playBass(midi, track, channel, pitch, time, duration):
-    midi.addNote(track, channel, pitch - 24, time, duration, 80)
+    midi.addNote(track, channel, pitch - 24, time - 0.25, duration, 127)
+    midi.addNote(track, channel, pitch - 24, time + 0.25, duration, 87)
+    midi.addNote(track, channel, pitch - 24, time + 0.75, duration, 127)
+    midi.addNote(track, channel, pitch - 24, time + 1.25, duration, 87)
+    midi.addNote(track, channel, pitch - 24, time + 1.75, duration, 127)
+    midi.addNote(track, channel, pitch - 24, time + 2.00, duration, 87)
+
+def playLead(midi, track, channel, pitch, time, duration, melody):
+    if melody == 0:
+        midi.addNote(track, channel, pitch + 0, time - 0.33, duration / 3, 100)
+        midi.addNote(track, channel, pitch + 3, time + 0.33, duration / 3, 87)
+        midi.addNote(track, channel, pitch + 8, time + 0.66, duration / 3, 127)
+        midi.addNote(track, channel, pitch + 11, time + 1, duration / 3, 87)
+        midi.addNote(track, channel, pitch + 0, time + 1.33, duration / 3, 127)
+        midi.addNote(track, channel, pitch + 3, time + 1.66, duration / 3, 87)
+    elif melody == 1:
+        midi.addNote(track, channel, pitch + 0, time - 0.25, duration / 2, 100)
+        midi.addNote(track, channel, pitch + 3, time + 0.25, duration / 2, 87)
+        midi.addNote(track, channel, pitch + 8, time + 1, duration, 127)
+        midi.addNote(track, channel, pitch + 11, time + 1.5, duration / 2, 87)
+        midi.addNote(track, channel, pitch + 0, time + 1.75, duration / 2, 127)
+        midi.addNote(track, channel, pitch + 3, time + 2.00, duration / 2, 87)
+
+
+
 
 
 def main(inputTempo, mood, jazziness, zaniness, chord, bass, lead):
@@ -47,7 +92,7 @@ def main(inputTempo, mood, jazziness, zaniness, chord, bass, lead):
     # Create a MIDI file with two tracks
     midi = MIDIFile(4)
     midi.addTempo(0, 0, tempo)  # Track 0, time 0, 120 BPM
-    midi.addProgramChange(0, 0, 0, chord)
+    midi.addProgramChange(0, 1, 0, chord)
     #midi.addProgramChange(0, 1, 0, 37)
     keyRootsToPitch = {"C" : 49,
                        "Db" : 50,
@@ -149,14 +194,14 @@ def main(inputTempo, mood, jazziness, zaniness, chord, bass, lead):
     # Save to file
     filenumber = 19
 
-    #with open("./chord1.mid", "wb") as output_file:
-        #midi.writeFile(output_file)
+    with open("./chord1.mid", "wb") as output_file:
+        midi.writeFile(output_file)
 
     print("MIDI file 'random.mid' saved successfully.")
 
     midi2 = MIDIFile(4)
-    midi2.addTempo(2, 0, tempo)  # Track 0, time 0, 120 BPM
-    midi2.addProgramChange(2, 0, 0, bass)
+    midi2.addTempo(0,0 , tempo)  # Track 0, time 0, 120 BPM
+    midi2.addProgramChange(0, 0, 0, bass)
     time = 0
     for i in range (0, phrases):
 
@@ -175,17 +220,51 @@ def main(inputTempo, mood, jazziness, zaniness, chord, bass, lead):
 
             zanyRoll = (random.randint(1, 101) / 101) * 0.65
             if zanyRoll > zanyChance:
-                playBass(midi2, 2, 0, zanyScaleDegrees[((sequence[i] + greekMode) % 7) - 1][0], time, beat[0]*2)
+                playBass(midi2, 0, 0, zanyScaleDegrees[((sequence[i] + greekMode) % 7) - 1][0], time + 0.05, beat[0]*2)
             else:
-                playBass(midi2, 2, 0, scaleDegrees[((sequence[i] + greekMode) % 7) - 1][0], time, beat[0]*2)
+                playBass(midi2, 0, 0, scaleDegrees[((sequence[i] + greekMode) % 7) - 1][0], time + 0.05, beat[0]*2)
                 #playNote(1, 1, scaleDegrees[((sequence[i] + greekMode) % 7) - 1][3] - 24, time, bars)
+    with open("./bass1.mid", "wb") as output_file:
+        midi2.writeFile(output_file)
 
-    #with open("./bass1.mid", "wb") as output_file:
-        #midi.writeFile(output_file)
+    midi3 = MIDIFile(4)
+    midi3.addTempo(2, 0, tempo)  # Track 0, time 0, 120 BPM
+    midi3.addProgramChange(2, 0, 0, bass)
+    time = 0
+    for i in range(0, phrases):
 
+        for i in range(0, len(sequence)):
+            root = key
+            time = time + beat[0] * 2 + beat[1] * 2
+
+            octaveModChance = random.randint(1, 101) / 101
+            if (octaveModChance < 0.20):
+                root -= 12  # DROPS an Octave
+            elif (octaveModChance > 0.85):
+                root += 12  # DROPS an Octave
+
+            firstPhrase = scaleDegrees[((sequence[i] + greekMode) % 7) - 1][0]
+
+            zanyRoll = (random.randint(1, 101) / 101) * 0.65
+            if zanyRoll > zanyChance:
+                playLead(midi3, 0, 0, zanyScaleDegrees[((sequence[i] + greekMode) % 7) - 1][0], time,beat[0] * 2, 1)
+            else:
+                playLead(midi3, 0, 0, scaleDegrees[((sequence[i] + greekMode) % 7) - 1][0], time, beat[0] * 2, 1)
+
+    with open("./lead1.mid", "wb") as output_file:
+        midi3.writeFile(output_file)
+
+    file1 = r"./chord1.mid"  # Replace with your first MIDI file
+    file2 = r"./bass1.mid"  # Replace with your second MIDI file
+    file3 = r"./lead1.mid"  # Replace with your second MIDI file
+    output_file = "merged_output.mid"  # Replace with your desired output file
+    final_output_file = "final_merged_output.mid"  # Replace with your desired output file
+
+    merge_midi(file1, file2, output_file)
+    merge_midi(output_file, file3, final_output_file)
     def play_midi():
         #pygame.mixer.music.load(r"./basicChordProgression" + str(filenumber) + ".mid")
-        pygame.mixer.music.load(r"./merged_output.mid")
+        pygame.mixer.music.load(r"./final_merged_output.mid")
         pygame.mixer.music.play()
 
     play_midi()
@@ -193,5 +272,7 @@ def main(inputTempo, mood, jazziness, zaniness, chord, bass, lead):
         continue
 
 
-main("Fast", "Dreamy",jazziness = 0.5, zaniness = 0.20, chord = 105, bass = 35, lead = 6)
+main("Very Fast", "Sad",jazziness = 0.5, zaniness = 1, chord = 12, bass = 34, lead = 43)
+
+
 

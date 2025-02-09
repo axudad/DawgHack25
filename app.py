@@ -60,7 +60,6 @@ zany = c_values.slider('Zany')
 if 'button_enabled' not in st.session_state:
     st.session_state.button_enabled = False
 
-
 # Random
 if c_buttons.button("Randomize"):
     info.randomize()
