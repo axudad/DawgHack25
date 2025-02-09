@@ -1,6 +1,6 @@
 import streamlit as st
 from Information import Information
-
+from src import bigmama
 
 
 info = Information()
@@ -75,10 +75,15 @@ if c_buttons.button("Create"):
     message.success("Created With: " + info.get_tempo() + ', ' + info.get_mood() + ", " + str(info.get_jazzy()) + ", " + str(info.get_zany())+ ", " + str(info.get_chord_string()) + ", " + str(info.get_bass_string())+ ", " + str(info.get_lead_string()))
     st.session_state.button_enabled = True
 
+def create():
+    bigmama(info.get_tempo(), info.get_mood(), jazziness = info.get_jazzy() , zaniness = info.get_zany(), chord = info.get_chord_int(), bass = info.get_bass_int(), lead = info.get_bass_int())
+
 # play and Download buttons
 if st.session_state.button_enabled:
     if c_buttons.button('Play',):
+        create()
         message.success("play")
 
     if c_buttons.download_button('Download',"Michael's Backage ;D/MIDIS/basicChordProgression.mid",):
         message.success("Down")
+

@@ -1,7 +1,7 @@
 from midiutil import MIDIFile
 import random
 import pygame
-import generateChordProgression
+from src import generateChordProgression
 import mido
 
 def merge_midi(file1, file2, output_file):
@@ -306,7 +306,6 @@ def main(inputTempo, mood, jazziness, zaniness, chord, bass, lead):
         continue
 
 
-main("Very Fast", "Tense",jazziness = 0.5, zaniness = 0.12, chord = 53, bass = 36, lead = 61)
 
 
 
