@@ -324,7 +324,7 @@ def main(inputTempo, mood, jazziness, zaniness, chord, bass, lead):
         continue
 
 
-main("Very Fast", "Funky",jazziness = 0.5, zaniness = 0.2, chord = 78, bass = 35, lead = 9)
+#main("Very Fast", "Funky",jazziness = 0.5, zaniness = 0.2, chord = 78, bass = 35, lead = 9)
 
 
 
