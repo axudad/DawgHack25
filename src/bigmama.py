@@ -1,7 +1,7 @@
 from midiutil import MIDIFile
 import random
 import pygame
-from src import generateChordProgression
+import generateChordProgression
 import mido
 
 def merge_midi(file1, file2, output_file):
@@ -86,6 +86,23 @@ def playLead(midi, track, channel, pitches, time, duration, melody):
         midi.addNote(track, channel, pitches[0], time + 1.5, duration / 2, 87)
         midi.addNote(track, channel, pitches[1], time + 1.75, duration / 2, 127)
         midi.addNote(track, channel, pitches[3], time + 2.00, duration / 2, 87)
+    elif melody == 2:
+        midi.addNote(track, channel, pitches[0], time - 0.25, duration / 2, 0)
+        midi.addNote(track, channel, pitches[1], time + 0.25, duration / 2, 87)
+        midi.addNote(track, channel, pitches[3], time + 1, duration, 127)
+        midi.addNote(track, channel, pitches[0], time + 1.125, duration / 2, 87)
+        midi.addNote(track, channel, pitches[1], time + 1.25, duration / 2, 0)
+        midi.addNote(track, channel, pitches[2], time + 1.75, duration / 2, 87)
+
+    elif melody == 3:
+        midi.addNote(track, channel, pitches[3], time - 0.25, duration / 2, 87)
+        midi.addNote(track, channel, pitches[2], time + 0.25, duration / 2, 70)
+        midi.addNote(track, channel, pitches[1], time + 1, duration, 60)
+        midi.addNote(track, channel, pitches[0], time + 1.5, duration / 2, 120)
+        midi.addNote(track, channel, pitches[2], time + 1.625, duration / 2, 87)
+        midi.addNote(track, channel, pitches[0], time + 1.75, duration / 2, 95)
+
+
 
 
 
@@ -95,11 +112,11 @@ def main(inputTempo, mood, jazziness, zaniness, chord, bass, lead):
     #SYNTH IS BEING PLAYED ON CHANNEL AND TRACK 0
     #BASS IS BEING PLAYED ON TRACK
 
-    tempoOptions = {"Very Slow": [60, 80],
-                    "Slow": [80, 100],
-                    "Moderate": [100, 125],
-                    "Fast": [125, 150],
-                    "Very Fast": [150, 180]}
+    tempoOptions = {"Very Slow": [80, 100],
+                    "Slow": [100, 125],
+                    "Moderate": [125, 150],
+                    "Fast": [150, 180],
+                    "Very Fast": [180, 210]}
 
     tempo = random.randint(tempoOptions[inputTempo][0], tempoOptions[inputTempo][0])
 
@@ -204,7 +221,7 @@ def main(inputTempo, mood, jazziness, zaniness, chord, bass, lead):
                 #playNote(1, 1, scaleDegrees[((sequence[i] + greekMode) % 7) - 1][3] - 24, time, bars)
 
     time = time + beat[0]*2 + beat[1]*2
-    playChord(midi, 1, 0, scaleDegrees[((sequence[-1] + greekMode) % 7) - 1], time, beat[0]*5, 0)
+    playChord(midi, 1, 0, scaleDegrees[((sequence[-1] + greekMode) % 7) - 1], time, beat[0]*5, 0.02)
 
     # Save to file
     filenumber = 19
@@ -235,13 +252,14 @@ def main(inputTempo, mood, jazziness, zaniness, chord, bass, lead):
 
             zanyRoll = (random.randint(1, 101) / 101) * 0.65
             floatRoll = randomFloat()
-            if floatRoll < 0.33:
+            if floatRoll < 0.25:
                 melody = 0
-            elif floatRoll < 0.66:
+            elif floatRoll < 0.5:
                   melody = 1
-            elif floatRoll < 1:
+            elif floatRoll < 0.75:
                   melody = 2
-
+            elif floatRoll < 1:
+                  melody = 3
 
             if zanyRoll > zanyChance:
                 playBass(midi2, 0, 0, zanyScaleDegrees[((sequence[i] + greekMode) % 7) - 1][0], time + 0.05, beat[0]*2, melody)
@@ -275,7 +293,7 @@ def main(inputTempo, mood, jazziness, zaniness, chord, bass, lead):
             floatRoll = randomFloat()
             if floatRoll < 0.33:
                 melody = 0
-            elif floatRoll < 0:
+            elif floatRoll < 0.66:
                   melody = 1
             elif floatRoll < 1:
                   melody = 2
@@ -306,6 +324,7 @@ def main(inputTempo, mood, jazziness, zaniness, chord, bass, lead):
         continue
 
 
+main("Very Fast", "Funky",jazziness = 0.5, zaniness = 0.2, chord = 78, bass = 35, lead = 9)
 
 
 
